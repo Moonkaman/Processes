@@ -15,12 +15,29 @@ and `clock_gettime()` should work just fine.
 #include <unistd.h>
 #include <time.h>
 
-#define number_iter 1000000
+#define MILLION 1000000
 #define BILLION 1000000000L
 
 int main()
 {
     // Your code here
-    
+    struct timespec start, end;
+    __uint64_t t = 0;
+    __uint64_t diff;
+
+    for (int i = 0; i < MILLION; i++)
+    {
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        write(fileno(stdout), NULL, 0);
+        clock_gettime(CLOCK_MONOTONIC, &end);
+
+        // get time it took for the write call in nanoseconds (straight from rutgers time manual)
+        diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
+        t += diff;
+    }
+
+    __uint64_t average = t / MILLION;
+    printf("Average number of nanoseconds for this system call: %llu\n", average);
+
     return 0;
 }
