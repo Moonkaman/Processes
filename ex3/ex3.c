@@ -9,7 +9,22 @@
 
 int main(void)
 {
-    // Your code here
+    int status;
+    int f = fork();
+    if (f < 0)
+    {
+        fprintf(stderr, "fork failed\n");
+        exit(1);
+    }
+    else if (f == 0)
+    {
+        printf("hello\n");
+    }
+    else
+    {
+        int wc = waitpid(f, &status, 0);
+        printf("goodbye\n");
+    }
 
     return 0;
 }

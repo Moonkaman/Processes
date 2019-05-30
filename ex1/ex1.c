@@ -9,6 +9,10 @@
 int main(void)
 {
     // Your code here
-
+    int x = 100;
+    int forked = fork();
+    x += 10;
+    printf("%d\n", x);
+    printf("forked = %d\n", (int)forked);
     return 0;
 }
